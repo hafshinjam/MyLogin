@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MyLogin</string>
+    <string name="username_hint">UserName</string>
+    <string name="password_hint">Password</string>
+    <string name="login_text">Login</string>
+    <string name="signup_text">Sign up</string>
+    <string name="login_message">info correct .Welcome!!!</string>
+    <string name="login_failed_message">info incorrect .try again!!!</string>
+    <string name="sign_up_failed_message">Username Already Exists .try again!!!</string>
+    <string name="blank_fields">Fill all of parameters!!!</string>
+    <string name="sign_up_successful_message">Congratulations. Account is signed up now!!! Going back to log in page!!</string>
+
+</resources>
