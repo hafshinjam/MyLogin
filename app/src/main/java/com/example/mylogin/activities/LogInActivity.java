@@ -1,5 +1,6 @@
 package com.example.mylogin.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -32,6 +33,7 @@ public class LogInActivity extends AppCompatActivity {
     private Button mSignUpButton;
     private ArrayList<Account> mAccounts = new ArrayList<>();
     public static final int LOG_IN_ACTIVITY_REQUEST_CODE = 0;
+    private String ACCOUNTS_SAVED = "com.example.mylogin.activities.accounts";
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -46,9 +48,17 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(ACCOUNTS_SAVED, mAccounts);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+        if (savedInstanceState != null && savedInstanceState.getSerializable(ACCOUNTS_SAVED) != null)
+            mAccounts = (ArrayList<Account>) savedInstanceState.getSerializable(ACCOUNTS_SAVED);
         findAllViews();
         setOnClickListeners();
     }
