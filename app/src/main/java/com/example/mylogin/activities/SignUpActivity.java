@@ -30,7 +30,6 @@ public class SignUpActivity extends AppCompatActivity {
     public final static String SIGN_UP_USER_NAME = "com.example.mylogin.activities.SignUpUserName";
     public final static String SIGN_UP_PASSWORD = "com.example.mylogin.activities.SignUpPassword";
     private Intent signUpIntent = new Intent();
-    private Snackbar mSnackbar;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -50,7 +49,8 @@ public class SignUpActivity extends AppCompatActivity {
                 getStringExtra("com.example.mylogin.activities.tempUserName"));
         mPasswordText.setText(intentSignUp.
                 getStringExtra("com.example.mylogin.activities.tempPassword"));
-        if (savedInstanceState != null && savedInstanceState.getSerializable(ACCOUNTS_SIGNED) != null)
+        if (savedInstanceState != null && savedInstanceState.getSerializable(ACCOUNTS_SIGNED) != null
+        && savedInstanceState.getSerializable(ACCOUNTS_SIGNED) instanceof ArrayList)
             mAccounts = (ArrayList<Account>) savedInstanceState.getSerializable(ACCOUNTS_SIGNED);
         setOnClickListeners();
 
@@ -67,26 +67,14 @@ public class SignUpActivity extends AppCompatActivity {
         mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mUserNameText.getText().toString().equals("") || mPasswordText.getText().toString().equals("")) {
-                    mSnackbar.make(mSignUpCoordinatorLayout,
-                            getString(R.string.blank_fields),
-                            Snackbar.LENGTH_LONG).show();
-                } else if (mAccounts.size() == 0) {
-                    addAccount();
-                    putExtras();
-                } else if (mAccounts.size() > 0)
-                    for (int i = 0; i < mAccounts.size(); i++) {
-                        if (mUserNameText.getText().toString().compareTo(mAccounts.get(i).getUserName()) == 0) {
-                            mSnackbar.make(mSignUpCoordinatorLayout,
-                                    getString(R.string.sign_up_failed_message),
-                                    Snackbar.LENGTH_LONG).show();
-                            break;
-                        } else if (!(mUserNameText.getText().toString().compareTo(mAccounts.get(i).getUserName()) == 0) &&
-                                i == mAccounts.size() - 1) {
-                            addAccount();
-                            putExtras();
-                        }
-                    }
+                Account temp = new Account(mUserNameText.getText().toString(),mPasswordText.getText().toString());
+               if (mAccounts.contains(temp)){
+                   Snackbar.make(mSignUpCoordinatorLayout,
+                           getString(R.string.sign_up_failed_message),
+                           Snackbar.LENGTH_LONG).show();
+               }else{
+                   addAccount();
+                putExtras();}
             }
         });
     }
@@ -96,7 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
                 mPasswordText.getText().toString()));
         Snackbar.make(mSignUpCoordinatorLayout,
                 getString(R.string.sign_up_successful_message),
-                mSnackbar.LENGTH_LONG).show();
+                Snackbar.LENGTH_LONG).show();
     }
 
     private void putExtras() {

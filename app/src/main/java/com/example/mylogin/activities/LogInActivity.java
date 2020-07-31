@@ -75,22 +75,19 @@ public class LogInActivity extends AppCompatActivity {
         mLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mAccounts.size() > 0) {
-                    for (int i = 0; i < mAccounts.size(); i++) {
-                        if (mAccounts.get(i).getUserName().equals(mUsernameTextView.getText().toString())) {
-                            if (mAccounts.get(i).getPassword().equals(mPasswordTextView.getText().toString())) {
+                Account temp = new Account(mUsernameTextView.getText().toString(), mPasswordTextView.getText().toString());
+                if (mAccounts.contains(temp)) {
+                    for (Account account : mAccounts) {
+                        if (account.getUserName().equals(mUsernameTextView.getText().toString())) {
+                            if (account.getPassword().equals(mPasswordTextView.getText().toString())) {
                                 Snackbar.make(mCoordinatorLayout,
                                         getString(R.string.login_message), Snackbar.LENGTH_LONG).show();
                                 break;
-                            } else
-                                Snackbar.make(mCoordinatorLayout,
-                                        getString(R.string.login_failed_message), Snackbar.LENGTH_LONG).show();
-                        } else if (!mAccounts.get(i).getUserName().equals(mUsernameTextView.getText().toString())
-                                && i == mAccounts.size() - 1)
-                            Snackbar.make(mCoordinatorLayout,
+                            }else Snackbar.make(mCoordinatorLayout,
                                     getString(R.string.login_failed_message), Snackbar.LENGTH_LONG).show();
+                        }
                     }
-                } else Snackbar.make(mCoordinatorLayout,
+                }else Snackbar.make(mCoordinatorLayout,
                         getString(R.string.login_failed_message), Snackbar.LENGTH_LONG).show();
             }
         });
